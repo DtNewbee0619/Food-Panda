@@ -1,6 +1,6 @@
 package org.taoding.dto;
 
-import com.sky.entity.OrderDetail;
+import org.taoding.entity.OrderDetail;
 import lombok.Data;
 
 import java.io.Serializable;

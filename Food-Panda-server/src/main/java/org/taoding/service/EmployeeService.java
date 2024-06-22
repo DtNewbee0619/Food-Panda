@@ -1,7 +1,7 @@
 package org.taoding.service;
 
-import com.sky.dto.EmployeeLoginDTO;
-import com.sky.entity.Employee;
+import org.taoding.dto.EmployeeLoginDTO;
+import org.taoding.entity.Employee;
 
 public interface EmployeeService {
 

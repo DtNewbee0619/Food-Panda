@@ -1,8 +1,8 @@
 package org.taoding.interceptor;
 
-import com.sky.constant.JwtClaimsConstant;
-import com.sky.properties.JwtProperties;
-import com.sky.utils.JwtUtil;
+import org.taoding.constant.JwtClaimsConstant;
+import org.taoding.properties.JwtProperties;
+import org.taoding.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package org.taoding.dto;
 
-import com.sky.entity.DishFlavor;
+import org.taoding.entity.DishFlavor;
 import lombok.Data;
 
 import java.io.Serializable;

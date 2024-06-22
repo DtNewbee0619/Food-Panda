@@ -1,6 +1,6 @@
 package org.taoding.dto;
 
-import com.sky.entity.SetmealDish;
+import org.taoding.entity.SetmealDish;
 import lombok.Data;
 
 import java.io.Serializable;

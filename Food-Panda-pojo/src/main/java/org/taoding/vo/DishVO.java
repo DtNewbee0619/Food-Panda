@@ -1,6 +1,6 @@
 package org.taoding.vo;
 
-import com.sky.entity.DishFlavor;
+import org.taoding.entity.DishFlavor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

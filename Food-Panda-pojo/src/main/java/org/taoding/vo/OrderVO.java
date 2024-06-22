@@ -1,7 +1,7 @@
 package org.taoding.vo;
 
-import com.sky.entity.OrderDetail;
-import com.sky.entity.Orders;
+import org.taoding.entity.OrderDetail;
+import org.taoding.entity.Orders;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

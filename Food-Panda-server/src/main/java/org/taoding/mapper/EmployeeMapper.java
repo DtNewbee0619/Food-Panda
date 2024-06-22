@@ -1,6 +1,6 @@
 package org.taoding.mapper;
 
-import com.sky.entity.Employee;
+import org.taoding.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
