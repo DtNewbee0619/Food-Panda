@@ -1,7 +1,10 @@
 package org.taoding.controller.admin;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.taoding.constant.JwtClaimsConstant;
+import org.taoding.dto.EmployeeDTO;
 import org.taoding.dto.EmployeeLoginDTO;
 import org.taoding.entity.Employee;
 import org.taoding.properties.JwtProperties;
@@ -24,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Tag(name = "员工相关接口")
 public class EmployeeController {
 
     @Resource
@@ -38,6 +42,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
+    @Operation(summary = "员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
@@ -67,8 +72,19 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
+    @Operation(summary = "员工登出")
     public Result<String> logout() {
         return Result.success();
     }
+
+    @PostMapping
+    @Operation(summary = "新增员工")
+    public Result save(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("新增员工：{}", employeeDTO);
+        employeeService.save(employeeDTO);
+        return Result.success();
+    }
+
+
 
 }

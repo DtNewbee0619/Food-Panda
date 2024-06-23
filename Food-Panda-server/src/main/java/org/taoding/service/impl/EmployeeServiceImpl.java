@@ -1,9 +1,13 @@
 package org.taoding.service.impl;
 
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
 import org.taoding.constant.MessageConstant;
+import org.taoding.constant.PasswordConstant;
 import org.taoding.constant.StatusConstant;
+import org.taoding.context.BaseContext;
+import org.taoding.dto.EmployeeDTO;
 import org.taoding.dto.EmployeeLoginDTO;
 import org.taoding.entity.Employee;
 import org.taoding.exception.AccountLockedException;
@@ -12,6 +16,8 @@ import org.taoding.exception.PasswordErrorException;
 import org.taoding.mapper.EmployeeMapper;
 import org.taoding.service.EmployeeService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -52,6 +58,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //3、返回实体对象
         return employee;
+    }
+
+    /**
+     * 新增员工
+     * @param employeeDTO
+     */
+    @Override
+    public void save(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        //对象属性拷贝
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        //设置账号状态 默认正常状态1表示正常0表示锁定
+        employee.setStatus(StatusConstant.ENABLE);
+
+        //设置默认密码
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+
+        //设置创建和修改时间
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        //设置创建人和修改人
+        // TODO 现在写死，后期修改
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+
+
+        employeeMapper.insert(employee);
     }
 
 }
