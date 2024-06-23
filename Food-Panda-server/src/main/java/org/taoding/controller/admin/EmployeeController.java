@@ -1,5 +1,6 @@
 package org.taoding.controller.admin;
 
+import jakarta.annotation.Resource;
 import org.taoding.constant.JwtClaimsConstant;
 import org.taoding.dto.EmployeeLoginDTO;
 import org.taoding.entity.Employee;
@@ -9,7 +10,6 @@ import org.taoding.service.EmployeeService;
 import org.taoding.utils.JwtUtil;
 import org.taoding.vo.EmployeeLoginVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +26,9 @@ import java.util.Map;
 @Slf4j
 public class EmployeeController {
 
-    @Autowired
+    @Resource
     private EmployeeService employeeService;
-    @Autowired
+    @Resource
     private JwtProperties jwtProperties;
 
     /**

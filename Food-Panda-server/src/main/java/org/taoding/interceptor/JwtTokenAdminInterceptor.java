@@ -1,16 +1,16 @@
 package org.taoding.interceptor;
 
+import jakarta.annotation.Resource;
 import org.taoding.constant.JwtClaimsConstant;
 import org.taoding.properties.JwtProperties;
 import org.taoding.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * jwt令牌校验的拦截器
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 
-    @Autowired
+    @Resource
     private JwtProperties jwtProperties;
 
     /**
