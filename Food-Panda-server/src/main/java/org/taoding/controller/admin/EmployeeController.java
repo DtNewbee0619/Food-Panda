@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 import org.taoding.constant.JwtClaimsConstant;
 import org.taoding.dto.EmployeeDTO;
@@ -92,6 +91,14 @@ public class EmployeeController {
         log.info("分页查询：{}", employeePageQueryDTO);
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @PostMapping("/status/{status}")
+    @Operation(summary = "启用和禁用员工账号")
+    public Result startOrStop(@PathVariable Integer status, Long id ) {
+        log.info("启用和禁用员工账号:{},{}", status, id);
+        employeeService.startOrStop(status,id);
+        return Result.success();
     }
 
 
