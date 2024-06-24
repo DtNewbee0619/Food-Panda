@@ -7,6 +7,7 @@ import org.taoding.dto.EmployeePageQueryDTO;
 import org.taoding.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.taoding.vo.EmployeeSearchVO;
 
 import java.util.List;
 
@@ -42,4 +43,12 @@ public interface EmployeeMapper {
      * @param employee
      */
     void update(Employee employee);
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    @Select("select * from employee where id=#{id}")
+    Employee selectById(Long id);
 }

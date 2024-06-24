@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.taoding.constant.MessageConstant;
 import org.taoding.constant.PasswordConstant;
@@ -20,11 +21,16 @@ import org.taoding.mapper.EmployeeMapper;
 import org.taoding.result.PageResult;
 import org.taoding.service.EmployeeService;
 import org.springframework.stereotype.Service;
+import org.taoding.vo.EmployeeSearchVO;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author taoding
+ */
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Resource
@@ -37,6 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
         String password = DigestUtils.md5DigestAsHex(employeeLoginDTO.getPassword().getBytes());
@@ -99,6 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
         Page<Employee> page = employeeMapper.selectByPage(employeePageQueryDTO);
@@ -121,6 +129,30 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .updateTime(LocalDateTime.now())
                 .updateUser(BaseContext.getCurrentId())
                 .build();
+        employeeMapper.update(employee);
+    }
+
+    /**
+     * 根据id查找员工
+     * @param
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Employee getById(Long id) {
+        return employeeMapper.selectById(id);
+    }
+
+    /**
+     * 根据id修改员工信息
+     * @param employeeDTO
+     */
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setCreateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
 

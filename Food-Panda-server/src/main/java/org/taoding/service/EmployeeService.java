@@ -5,7 +5,11 @@ import org.taoding.dto.EmployeeLoginDTO;
 import org.taoding.dto.EmployeePageQueryDTO;
 import org.taoding.entity.Employee;
 import org.taoding.result.PageResult;
+import org.taoding.vo.EmployeeSearchVO;
 
+/**
+ * @author taoding
+ */
 public interface EmployeeService {
 
     /**
@@ -32,4 +36,13 @@ public interface EmployeeService {
      * @param id
      */
     void startOrStop(Integer status, Long id);
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    Employee getById(Long id);
+
+    void update(EmployeeDTO employeeDTO);
 }

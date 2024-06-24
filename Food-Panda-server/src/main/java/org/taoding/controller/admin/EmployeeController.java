@@ -1,9 +1,11 @@
 package org.taoding.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.taoding.constant.JwtClaimsConstant;
 import org.taoding.dto.EmployeeDTO;
@@ -17,6 +19,7 @@ import org.taoding.service.EmployeeService;
 import org.taoding.utils.JwtUtil;
 import org.taoding.vo.EmployeeLoginVO;
 import lombok.extern.slf4j.Slf4j;
+import org.taoding.vo.EmployeeSearchVO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +31,7 @@ import java.util.Map;
 @RequestMapping("/admin/employee")
 @Slf4j
 @Tag(name = "员工相关接口")
+
 public class EmployeeController {
 
     @Resource
@@ -73,7 +77,7 @@ public class EmployeeController {
      */
     @PostMapping("/logout")
     @Operation(summary = "员工登出")
-    public Result<String> logout() {
+    public Result logout() {
         return Result.success();
     }
 
@@ -95,12 +99,30 @@ public class EmployeeController {
 
     @PostMapping("/status/{status}")
     @Operation(summary = "启用和禁用员工账号")
-    public Result startOrStop(@PathVariable Integer status, Long id ) {
+    public Result startOrStop(@PathVariable @Parameter(description = "当前状态") Integer status,
+                              @Parameter(description = "员工id") Long id ) {
         log.info("启用和禁用员工账号:{},{}", status, id);
         employeeService.startOrStop(status,id);
         return Result.success();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "根据id查询")
+    public Result<EmployeeSearchVO> getById(@Parameter(description = "员工id") @PathVariable Long id) throws InterruptedException {
+        log.info("查询员工id:{}", id);
+        Employee employee = employeeService.getById(id);
+        EmployeeSearchVO employeeSearchVO = new EmployeeSearchVO();
+        BeanUtils.copyProperties(employee, employeeSearchVO);
+        return Result.success(employeeSearchVO);
+    }
+
+    @PutMapping
+    @Operation(summary = "根据id修改")
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("修改员工id:{}", employeeDTO.getId());
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
 
 
 }
