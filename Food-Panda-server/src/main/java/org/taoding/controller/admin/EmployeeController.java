@@ -3,20 +3,21 @@ package org.taoding.controller.admin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.*;
 import org.taoding.constant.JwtClaimsConstant;
 import org.taoding.dto.EmployeeDTO;
 import org.taoding.dto.EmployeeLoginDTO;
+import org.taoding.dto.EmployeePageQueryDTO;
 import org.taoding.entity.Employee;
 import org.taoding.properties.JwtProperties;
+import org.taoding.result.PageResult;
 import org.taoding.result.Result;
 import org.taoding.service.EmployeeService;
 import org.taoding.utils.JwtUtil;
 import org.taoding.vo.EmployeeLoginVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class EmployeeController {
      * 登录
      *
      * @param employeeLoginDTO
-     * @return
+     * @return Result
      */
     @PostMapping("/login")
     @Operation(summary = "员工登录")
@@ -69,7 +70,7 @@ public class EmployeeController {
     /**
      * 退出
      *
-     * @return
+     * @return Result
      */
     @PostMapping("/logout")
     @Operation(summary = "员工登出")
@@ -79,10 +80,18 @@ public class EmployeeController {
 
     @PostMapping
     @Operation(summary = "新增员工")
-    public Result save(@RequestBody EmployeeDTO employeeDTO) {
+    public <T> Result<T> save(@RequestBody EmployeeDTO employeeDTO) {
         log.info("新增员工：{}", employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
+    }
+
+    @GetMapping("/page")
+    @Operation(summary = "分页查询")
+    public Result<PageResult> page(@Valid EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("分页查询：{}", employeePageQueryDTO);
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
+        return Result.success(pageResult);
     }
 
 

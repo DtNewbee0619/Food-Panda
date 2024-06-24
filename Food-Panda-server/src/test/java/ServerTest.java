@@ -19,11 +19,9 @@ public class ServerTest {
         String key = jwtProperties.getAdminSecretKey();
         Map<String, Object> A = new HashMap<>();
         A.put("empId",1);
-/*
-        String s = JwtUtil.createJWT(key, 100000000, A);
+        String s = JwtUtil.createJWT(key, 1000000000, A);
         System.out.println("s = " + s);
-        System.out.println();*/
-        String s = "eyJhbGciOiJIUzM4NCJ9.eyJlbXBJZCI6MSwiZXhwIjoxNzE5MjM5MzY4fQ.FJCCMy2egdmOZeYVZF0yQFltyibslzjbFULff78_7kxJi6wERzw9XK_t4IZgH6MK";
+        System.out.println();
         Claims c = JwtUtil.parseJWT(key, s);
         System.out.println("c.get = " + c);
 

@@ -46,6 +46,8 @@ sky:
     password: root
 
 springdoc:
+  default-flat-param-object:
+    true
   swagger-ui:
     path: /swagger-ui.html
     tags-sorter: alpha

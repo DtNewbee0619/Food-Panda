@@ -1,5 +1,7 @@
 package org.taoding.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
@@ -9,15 +11,18 @@ import org.taoding.constant.StatusConstant;
 import org.taoding.context.BaseContext;
 import org.taoding.dto.EmployeeDTO;
 import org.taoding.dto.EmployeeLoginDTO;
+import org.taoding.dto.EmployeePageQueryDTO;
 import org.taoding.entity.Employee;
 import org.taoding.exception.AccountLockedException;
 import org.taoding.exception.AccountNotFoundException;
 import org.taoding.exception.PasswordErrorException;
 import org.taoding.mapper.EmployeeMapper;
+import org.taoding.result.PageResult;
 import org.taoding.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -31,6 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeLoginDTO
      * @return
      */
+    @Override
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
         String password = DigestUtils.md5DigestAsHex(employeeLoginDTO.getPassword().getBytes());
@@ -80,13 +86,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         //设置创建人和修改人
-        // TODO 现在写死，后期修改
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
 
-
-
+        //调用持久层
         employeeMapper.insert(employee);
+    }
+
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+        Page<Employee> page = employeeMapper.selectByPage(employeePageQueryDTO);
+        long total = page.getTotal();
+        List<Employee> result = page.getResult();
+        return new PageResult(total,result);
+
     }
 
 }
