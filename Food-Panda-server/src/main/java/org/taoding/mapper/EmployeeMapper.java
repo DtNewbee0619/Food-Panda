@@ -3,10 +3,12 @@ package org.taoding.mapper;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.taoding.annotation.AutoFill;
 import org.taoding.dto.EmployeePageQueryDTO;
 import org.taoding.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.taoding.enumeration.OperationType;
 import org.taoding.vo.EmployeeSearchVO;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public interface EmployeeMapper {
     @Insert("insert into employee(name, username, password, phone, sex, id_number, status, create_time, update_time, create_user, update_user) " +
             "values" +
             "(#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})" )
+    @AutoFill(value = OperationType.INSERT)
     void insert(Employee employee);
 
     /**
@@ -42,6 +45,7 @@ public interface EmployeeMapper {
      * 更新员工信息
      * @param employee
      */
+    @AutoFill(value = OperationType.UPDATE)
     void update(Employee employee);
 
     /**

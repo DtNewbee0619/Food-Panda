@@ -2,14 +2,14 @@ import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.taoding.SkyApplication;
+import org.taoding.Application;
 import org.taoding.properties.JwtProperties;
 import org.taoding.utils.JwtUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@SpringBootTest(classes = SkyApplication.class)
+@SpringBootTest(classes = Application.class)
 public class ServerTest {
 
     @Resource
