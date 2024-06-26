@@ -6,12 +6,16 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.taoding.constant.MessageConstant;
 import org.taoding.constant.StatusConstant;
 import org.taoding.context.BaseContext;
 import org.taoding.dto.CategoryDTO;
 import org.taoding.dto.CategoryPageQueryDTO;
 import org.taoding.entity.Category;
+import org.taoding.exception.DeletionNotAllowedException;
 import org.taoding.mapper.CategoryMapper;
+import org.taoding.mapper.DishMapper;
+import org.taoding.mapper.SetmealMapper;
 import org.taoding.result.PageResult;
 import org.taoding.service.CategoryService;
 
@@ -28,6 +32,10 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
+    @Resource
+    private DishMapper dishMapper;
+    @Resource
+    private SetmealMapper setmealMapper;
 
     /**
      * 添加分类
@@ -62,6 +70,18 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void deleteById(Long id) {
+        Integer count = dishMapper.countByCategoryId(id);
+        if(count > 0){
+            //当前分类下有菜品，不能删除
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);
+        }
+
+        //查询当前分类是否关联了套餐，如果关联了就抛出业务异常
+        count = setmealMapper.countByCategoryId(id);
+        if(count > 0){
+            //当前有套餐关联了此分类，不能删除
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
+        }
         categoryMapper.deleteById(id);
     }
 

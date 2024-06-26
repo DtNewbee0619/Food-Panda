@@ -30,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
-@Tag(name = "员工相关接口")
+@Tag(name = "员工接口")
 
 public class EmployeeController {
 

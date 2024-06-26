@@ -43,16 +43,18 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      * @param registry
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        log.info("开始设置静态资源映射");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     /**
-     * 扩展Spring MVC框架的消息转化器
+     * 扩展Spring MVC框架的消息转化器,对日期格式进行标准化修改
       * @param converters
      */
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        log.info("扩展消息转换器...");
         //创建一个消息转换器对象
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(new JacksonObjectMapper());

@@ -4,8 +4,11 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author taoding
+ */
 @Component
-@ConfigurationProperties(prefix = "sky.jwt")
+@ConfigurationProperties(prefix = "panda.jwt")
 @Data
 public class JwtProperties {
 

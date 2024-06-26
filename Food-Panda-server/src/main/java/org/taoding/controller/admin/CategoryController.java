@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.taoding.dto.CategoryDTO;
 import org.taoding.dto.CategoryPageQueryDTO;
@@ -18,10 +17,11 @@ import java.util.List;
 
 /**
  * 分类管理
+ * @author taoding
  */
 @RestController
 @RequestMapping("/admin/category")
-@Tag(name = "分类相关接口")
+@Tag(name = "分类接口")
 @Slf4j
 public class CategoryController {
 
