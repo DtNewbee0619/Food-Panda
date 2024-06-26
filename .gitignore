@@ -39,4 +39,4 @@ build/
 .DS_Store
 
 ### Secret Key Under Dev###
-*dev.yml
+application-dev.yml
