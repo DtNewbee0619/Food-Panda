@@ -9,7 +9,6 @@ import org.springframework.util.DigestUtils;
 import org.taoding.constant.MessageConstant;
 import org.taoding.constant.PasswordConstant;
 import org.taoding.constant.StatusConstant;
-import org.taoding.context.BaseContext;
 import org.taoding.dto.EmployeeDTO;
 import org.taoding.dto.EmployeeLoginDTO;
 import org.taoding.dto.EmployeePageQueryDTO;
@@ -21,6 +20,8 @@ import org.taoding.mapper.EmployeeMapper;
 import org.taoding.result.PageResult;
 import org.taoding.service.EmployeeService;
 import org.springframework.stereotype.Service;
+import org.taoding.vo.EmployeeSearchVO;
+
 import java.util.List;
 
 /**
@@ -127,8 +128,11 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Employee getById(Long id) {
-        return employeeMapper.selectById(id);
+    public EmployeeSearchVO getById(Long id) {
+        Employee employee = employeeMapper.selectById(id);
+        EmployeeSearchVO employeeSearchVO = new EmployeeSearchVO();
+        BeanUtils.copyProperties(employee, employeeSearchVO);
+        return employeeSearchVO;
     }
 
     /**

@@ -29,7 +29,7 @@ public class CommonController {
     private AliOssUtil aliOssUtil;
 
     @PostMapping("/upload")
-    @Operation(description = "文件上传")
+    @Operation(summary = "文件上传")
     public Result<String> upload(MultipartFile file){
         log.info("文件上传：{}", file);
         try {

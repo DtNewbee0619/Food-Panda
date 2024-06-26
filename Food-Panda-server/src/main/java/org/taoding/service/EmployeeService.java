@@ -42,7 +42,12 @@ public interface EmployeeService {
      * @param id
      * @return
      */
-    Employee getById(Long id);
+    EmployeeSearchVO getById(Long id);
 
+
+    /**
+     * 更新员工信息
+     * @param employeeDTO
+     */
     void update(EmployeeDTO employeeDTO);
 }

@@ -108,11 +108,9 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     @Operation(summary = "根据id查询")
-    public Result<EmployeeSearchVO> getById(@Parameter(description = "员工id") @PathVariable Long id) throws InterruptedException {
+    public Result<EmployeeSearchVO> getById(@Parameter(description = "员工id") @PathVariable Long id) {
         log.info("查询员工id:{}", id);
-        Employee employee = employeeService.getById(id);
-        EmployeeSearchVO employeeSearchVO = new EmployeeSearchVO();
-        BeanUtils.copyProperties(employee, employeeSearchVO);
+        EmployeeSearchVO employeeSearchVO = employeeService.getById(id);
         return Result.success(employeeSearchVO);
     }
 
