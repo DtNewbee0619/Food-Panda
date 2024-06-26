@@ -1,5 +1,6 @@
 package org.taoding.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;

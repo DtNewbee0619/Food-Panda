@@ -1,5 +1,6 @@
 package org.taoding.controller.admin;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class CommonController {
     private AliOssUtil aliOssUtil;
 
     @PostMapping("/upload")
+    @Operation(description = "文件上传")
     public Result<String> upload(MultipartFile file){
         log.info("文件上传：{}", file);
         try {
