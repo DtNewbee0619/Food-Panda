@@ -63,6 +63,12 @@ spring:
           allow: 127.0.0.1
           # IP黑名单（共同存在时，deny优先于allow）
           deny:
+  data:
+    redis:
+      host: ${panda.redis.host}
+      port: ${panda.redis.port}
+      password: ${panda.redis.password}
+      database: ${panda.redis.database}
 
 
 mybatis:
@@ -96,20 +102,24 @@ panda:
     bucket-name: ${panda.alioss.bucket-name}
 
 springdoc:
-  default-flat-param-object:
-    true
+  default-flat-param-object: true
   swagger-ui:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
+    enabled: true
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: 'Controller'
-      paths-to-match: '/**'
-      packages-to-scan: org.taoding.controller
+    - group: 'Admin'
+      paths-to-match: '/admin/**'
+      packages-to-scan: org.taoding.controller.admin
+    - group: 'User'
+      paths-to-match: '/user/**'
+      packages-to-scan: org.taoding.controller.user
+
 
 knife4j:
-  enable: true
+  enable: false
   setting:
     language: zh_cn

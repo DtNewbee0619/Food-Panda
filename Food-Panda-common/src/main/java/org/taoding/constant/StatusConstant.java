@@ -10,4 +10,7 @@ public class StatusConstant {
 
     //禁用
     public static final Integer DISABLE = 0;
+
+    //店铺状态
+    public static final String SHOP = "SHOP_STATUS";
 }

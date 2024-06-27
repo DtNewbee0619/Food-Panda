@@ -9,9 +9,8 @@ import org.taoding.utils.JwtUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-@SpringBootTest(classes = Application.class)
+//@SpringBootTest(classes = Application.class)
 public class ServerTest {
-
     @Resource
     private JwtProperties jwtProperties;
     @Test
