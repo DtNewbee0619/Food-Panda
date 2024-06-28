@@ -15,14 +15,18 @@ import java.util.Set;
  * @Author Tao Ding
  * @Description: TODO
  */
-//@SpringBootTest
+@SpringBootTest
 public class SpringDataRedisTest {
     @Resource
     private RedisTemplate redisTemplate;
 
     @Test
     public void testRedisTemplate(){
-        //ValueOperations valueOperations = redisTemplate.opsForValue();
+        //Set keys = redisTemplate.keys("dish_*");
+        //System.out.println("keys = " + keys);
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String dish11 = (String) valueOperations.get("dish_11");
+        System.out.println("dish11 = " + dish11);
     }
     
     @Test

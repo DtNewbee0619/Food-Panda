@@ -1,7 +1,7 @@
 package org.taoding.aspect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -22,7 +22,9 @@ import java.time.LocalDateTime;
  */
 @Aspect
 @Component
+@Slf4j
 public class AutoFillAspect {
+
     /**
      * 切入点
      */
@@ -31,7 +33,7 @@ public class AutoFillAspect {
 
 
     /**
-     * 前置通知
+     * 自动填充更新时间，更新用户，创建时间，创建用户
      */
     @Before("autoFillPointCut()")
     public void autoFillBefore(JoinPoint joinPoint) {
@@ -64,7 +66,7 @@ public class AutoFillAspect {
                 setUpdateTime.invoke(entity,now);
                 setUpdateUser.invoke(entity,currentUserId);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }else if(operationType==OperationType.UPDATE){
             try {
@@ -73,9 +75,10 @@ public class AutoFillAspect {
                 setUpdateTime.invoke(entity,now);
                 setUpdateUser.invoke(entity,currentUserId);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
 
         }
     }
+
 }
