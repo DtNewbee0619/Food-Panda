@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.taoding.dto.DishDTO;
 import org.taoding.dto.DishPageQueryDTO;
+import org.taoding.entity.Dish;
 import org.taoding.mapper.DishFlavorMapper;
 import org.taoding.result.PageResult;
 import org.taoding.result.Result;
@@ -70,5 +71,17 @@ public class DishController {
         log.info("修改菜品：{}", dishDTO);
         dishService.update(dishDTO);
         return Result.success();
+    }
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    @Operation(summary = "根据分类id查询菜品")
+    public Result<List<Dish>> list(Long categoryId){
+        List<Dish> list = dishService.list(categoryId);
+        return Result.success(list);
     }
 }

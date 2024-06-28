@@ -2,7 +2,6 @@ package org.taoding.config;
 
 import jakarta.annotation.Resource;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.cbor.MappingJackson2CborHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.taoding.interceptor.JwtTokenAdminInterceptor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.taoding.interceptor.JwtTokenUserInterceptor;
 import org.taoding.json.JacksonObjectMapper;
 
 import java.util.List;
@@ -25,6 +25,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Resource
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
+    @Resource
+    private JwtTokenUserInterceptor jwtTokenUserInterceptor;
     /**
      * 注册自定义拦截器
      *
@@ -36,6 +38,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");
+        registry.addInterceptor(jwtTokenUserInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/user/login")
+                .excludePathPatterns("/user/shop/status");
     }
 
 

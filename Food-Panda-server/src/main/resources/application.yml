@@ -70,7 +70,6 @@ spring:
       password: ${panda.redis.password}
       database: ${panda.redis.database}
 
-
 mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
@@ -86,20 +85,6 @@ logging:
         mapper: debug
         service: info
         controller: info
-
-panda:
-  jwt:
-    # 设置jwt签名加密时使用的秘钥
-    admin-secret-key: ${panda.jwt.admin-secret-key}
-    # 设置jwt过期时间
-    admin-ttl: ${panda.jwt.admin-ttl}
-    # 设置前端传递过来的令牌名称
-    admin-token-name: ${panda.jwt.admin-token-name}
-  alioss:
-    endpoint: ${panda.alioss.endpoint}
-    access-key-id: ${panda.alioss.access-key-id}
-    access-key-secret: ${panda.alioss.access-key-secret}
-    bucket-name: ${panda.alioss.bucket-name}
 
 springdoc:
   default-flat-param-object: true
@@ -123,3 +108,27 @@ knife4j:
   enable: false
   setting:
     language: zh_cn
+
+
+panda:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: ${panda.jwt.admin-secret-key}
+    # 设置jwt过期时间
+    admin-ttl: ${panda.jwt.admin-ttl}
+    # 设置前端传递过来的令牌名称
+    admin-token-name: ${panda.jwt.admin-token-name}
+    # 设置jwt签名加密时使用的秘钥
+    user-secret-key: ${panda.jwt.user-secret-key}
+    # 设置jwt过期时间
+    user-ttl: ${panda.jwt.user-ttl}
+    # 设置前端传递过来的令牌名称
+    user-token-name: ${panda.jwt.user-token-name}
+  alioss:
+    endpoint: ${panda.alioss.endpoint}
+    access-key-id: ${panda.alioss.access-key-id}
+    access-key-secret: ${panda.alioss.access-key-secret}
+    bucket-name: ${panda.alioss.bucket-name}
+  wechat:
+    appid: ${panda.wechat.appid}
+    secret: ${panda.wechat.secret}

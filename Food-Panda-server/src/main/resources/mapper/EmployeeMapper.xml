@@ -15,7 +15,7 @@
             <if test="updateUser != null">update_user = #{updateUser},</if>
             <if test="status != null">status = #{status},</if>
         </set>
-        where id=${id}
+        where id=#{id}
     </update>
     <select id="selectByPage" resultType="org.taoding.entity.Employee">
         select * from employee

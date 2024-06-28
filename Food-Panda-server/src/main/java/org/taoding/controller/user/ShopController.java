@@ -30,4 +30,6 @@ public class ShopController {
         log.info("获取到店铺的营业状态为：{}", shopStatus);
         return Result.success(shopStatus);
     }
+
+
 }
