@@ -40,4 +40,11 @@ public class ShoppingCartController  {
         log.info("获取购物车商品：{}", cart);
         return Result.success(cart);
     }
+
+    @DeleteMapping("/clean")
+    public Result deleteShoppingCart(Long id){
+        shoppingCartService.clear();
+        return Result.success();
+    }
 }
+
