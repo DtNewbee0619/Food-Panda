@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import org.taoding.dto.SetmealDTO;
 import org.taoding.dto.SetmealPageQueryDTO;
@@ -39,6 +40,7 @@ public class SetmealController {
      */
     @PostMapping
     @Operation(summary = "新增套餐")
+    @CacheEvict(cacheNames = "setmeanCache", key = "setmealDTO.categoryId")
     public Result save(@RequestBody SetmealDTO setmealDTO) {
         setmealService.saveWithDish(setmealDTO);
         return Result.success();
@@ -89,6 +91,7 @@ public class SetmealController {
      */
     @PutMapping
     @Operation(summary = "修改套餐")
+    @CacheEvict(cacheNames = "setmeanCache", allEntries = true)
     public Result update(@RequestBody SetmealDTO setmealDTO) {
         setmealService.update(setmealDTO);
         return Result.success();
@@ -102,6 +105,7 @@ public class SetmealController {
      */
     @PostMapping("/status/{status}")
     @Operation(summary = "套餐起售停售")
+    @CacheEvict(cacheNames = "setmealCache", allEntries = true)
     public Result startOrStop(@PathVariable Integer status, Long id) {
         setmealService.startOrStop(status, id);
         return Result.success();
