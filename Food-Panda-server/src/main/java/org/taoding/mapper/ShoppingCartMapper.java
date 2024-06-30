@@ -1,9 +1,6 @@
 package org.taoding.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.taoding.entity.ShoppingCart;
 
 import java.util.List;
@@ -23,6 +20,13 @@ public interface ShoppingCartMapper {
      */
     List<ShoppingCart> list(ShoppingCart shoppingCart);
 
+    /**
+     * 根据用户id查询购物车数据
+     * @param userId
+     * @return
+     */
+    @Select("select * from shopping_cart where user_id=#{userId}")
+    List<ShoppingCart> listByUserId(Long userId);
 
     /**
      * 更新数量
@@ -43,6 +47,6 @@ public interface ShoppingCartMapper {
      * 清空购物车
      * @param userId
      */
-    @Delete("delete from shopping_cart where user_id=${userId}")
+    @Delete("delete from shopping_cart where user_id=#{userId}")
     void deleteAll(Long userId);
 }
