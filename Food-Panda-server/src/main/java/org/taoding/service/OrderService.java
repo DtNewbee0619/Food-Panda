@@ -1,6 +1,8 @@
 package org.taoding.service;
 
+import org.taoding.dto.OrdersPaymentDTO;
 import org.taoding.dto.OrdersSubmitDTO;
+import org.taoding.vo.OrderPaymentVO;
 import org.taoding.vo.OrderSubmitVO;
 
 /**
@@ -9,5 +11,23 @@ import org.taoding.vo.OrderSubmitVO;
  * @Description: TODO
  */
 public interface OrderService {
+    /**
+     * 提交订单
+     * @param ordersSubmitDTO
+     * @return
+     */
     OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO);
+
+    /**
+     * 订单支付
+     * @param ordersPaymentDTO
+     * @return
+     */
+    OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception;
+
+    /**
+     * 支付成功，修改订单状态
+     * @param outTradeNo
+     */
+    void paySuccess(String outTradeNo);
 }

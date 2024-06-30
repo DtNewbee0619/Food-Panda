@@ -4,13 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.taoding.dto.OrdersPaymentDTO;
 import org.taoding.dto.OrdersSubmitDTO;
 import org.taoding.result.Result;
 import org.taoding.service.OrderService;
+import org.taoding.vo.OrderPaymentVO;
 import org.taoding.vo.OrderSubmitVO;
 
 /**
@@ -32,5 +31,20 @@ public class OrderController {
         log.info("用户提交订单:{}", ordersSubmitDTO);
         OrderSubmitVO orderSubmitVO = orderService.submitOrder(ordersSubmitDTO);
         return Result.success(orderSubmitVO);
+    }
+
+    /**
+     * 订单支付
+     *
+     * @param ordersPaymentDTO
+     * @return
+     */
+    @PutMapping("/payment")
+    @Operation(summary = "订单支付")
+    public Result<OrderPaymentVO> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) throws Exception {
+        log.info("订单支付：{}", ordersPaymentDTO);
+        OrderPaymentVO orderPaymentVO = orderService.payment(ordersPaymentDTO);
+        log.info("生成预支付交易单：{}", orderPaymentVO);
+        return Result.success(orderPaymentVO);
     }
 }

@@ -1,27 +1,26 @@
 package org.taoding.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.taoding.constant.MessageConstant;
 import org.taoding.context.BaseContext;
+import org.taoding.dto.OrdersPaymentDTO;
 import org.taoding.dto.OrdersSubmitDTO;
-import org.taoding.entity.AddressBook;
-import org.taoding.entity.OrderDetail;
-import org.taoding.entity.Orders;
-import org.taoding.entity.ShoppingCart;
+import org.taoding.entity.*;
 import org.taoding.exception.AddressBookBusinessException;
+import org.taoding.exception.OrderBusinessException;
 import org.taoding.exception.ShoppingCartBusinessException;
-import org.taoding.mapper.AddressBookMapper;
-import org.taoding.mapper.OrderDetailMapper;
-import org.taoding.mapper.OrderMapper;
-import org.taoding.mapper.ShoppingCartMapper;
+import org.taoding.mapper.*;
 import org.taoding.service.OrderService;
+import org.taoding.utils.WeChatPayUtil;
+import org.taoding.vo.OrderPaymentVO;
 import org.taoding.vo.OrderSubmitVO;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Resource
@@ -44,6 +43,10 @@ public class OrderServiceImpl implements OrderService {
     private AddressBookMapper addressBookMapper;
     @Resource
     private ShoppingCartMapper shoppingCartMapper;
+    @Resource
+    private UserMapper userMapper;
+    @Resource
+    private WeChatPayUtil weChatPayUtil;
 
     /**
      * 用户下单
@@ -98,5 +101,61 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         return orderSubmitVO;
+    }
+
+    /**
+     * 订单支付
+     *
+     * @param ordersPaymentDTO
+     * @return
+     */
+    @Override
+    public OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception {
+        // 当前登录用户id
+        Long userId = BaseContext.getCurrentId();
+        User user = userMapper.selectById(userId);
+
+        //调用微信支付接口，生成预支付交易单
+        JSONObject jsonObject = weChatPayUtil.pay(
+                //商户订单号
+                ordersPaymentDTO.getOrderNumber(),
+                //支付金额，单位 元
+                new BigDecimal("0.01"),
+                //商品描述
+                "苍穹外卖订单",
+                //微信用户的openid
+                user.getOpenid()
+        );
+
+        if (jsonObject.getString("code") != null && jsonObject.getString("code").equals("ORDERPAID")) {
+            throw new OrderBusinessException("该订单已支付");
+        }
+
+        OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
+        vo.setPackageStr(jsonObject.getString("package"));
+
+        return vo;
+    }
+
+    /**
+     * 支付成功，修改订单状态
+     *
+     * @param outTradeNo
+     */
+    @Override
+    public void paySuccess(String outTradeNo) {
+
+        // 根据订单号查询订单
+        Orders ordersDB = orderMapper.getByNumber(outTradeNo);
+
+        // 根据订单id更新订单的状态、支付方式、支付状态、结账时间
+        Orders orders = Orders.builder()
+                .id(ordersDB.getId())
+                .status(Orders.TO_BE_CONFIRMED)
+                .payStatus(Orders.PAID)
+                .checkoutTime(LocalDateTime.now())
+                .build();
+
+        orderMapper.update(orders);
     }
 }
