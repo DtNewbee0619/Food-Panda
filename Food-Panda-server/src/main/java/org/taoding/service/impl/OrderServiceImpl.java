@@ -1,5 +1,6 @@
 package org.taoding.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,14 @@ import org.taoding.service.OrderService;
 import org.taoding.utils.WeChatPayUtil;
 import org.taoding.vo.OrderPaymentVO;
 import org.taoding.vo.OrderSubmitVO;
+import org.taoding.websocket.WebSocketServer;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 6/29/24 18:19
@@ -47,6 +51,8 @@ public class OrderServiceImpl implements OrderService {
     private UserMapper userMapper;
     @Resource
     private WeChatPayUtil weChatPayUtil;
+    @Resource
+    private WebSocketServer webSocketServer;
 
     /**
      * 用户下单
@@ -157,5 +163,13 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderMapper.update(orders);
+
+        //通过websocket向客户端浏览器推送消息type orderId content
+        Map<String,Object> map = new HashMap<>();
+        map.put("type",1);
+        map.put("orderId",ordersDB.getId());
+        map.put("content","订单");
+        String json = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
     }
 }
