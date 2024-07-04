@@ -103,12 +103,10 @@ springdoc:
       paths-to-match: '/user/**'
       packages-to-scan: org.taoding.controller.user
 
-
 knife4j:
-  enable: false
+  enable: true
   setting:
     language: zh_cn
-
 
 panda:
   jwt:
